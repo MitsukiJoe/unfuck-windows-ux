@@ -22,6 +22,23 @@ Small utility scripts I wrote for myself to deal with the daily UX paper cuts th
 
 Runs on [AutoHotkey v2](https://www.autohotkey.com/download/).
 
+## AutoHotkeyTools.ahk: unified tray and settings
+
+Run `AutoHotkeyTools.ahk` to manage all four features from one tray icon. Click the icon to open settings, close the settings window to keep running in the background, or right-click the icon to exit.
+
+- Punctuation: independent toggle, seven bracket styles (`「」`, `『』`, `〖〗`, `〔〕`, `《》`, `〈〉`, `【】`), optional Simplified Chinese layout restriction.
+- Same-app window switching: independent toggle, configurable shortcut, and optional Explorer folder-window filtering.
+- Microsoft Pinyin Chinese mode: independent toggle and a comma-separated process exclusion list.
+- Communication audio: independent toggle and a 1, 2, 5, or 10 second sync interval.
+
+Changes apply immediately and persist in `%APPDATA%\AutoHotkeyTools\settings.ini`. Enable “Run at Windows sign-in” in the settings window's “General” group; the startup shortcut runs the unified entry point without opening the settings window.
+
+When migrating, stop the four standalone scripts and remove their startup shortcuts before enabling unified startup. The original entry points remain available for standalone use and share their implementation through `lib/`. Run either the unified entry point or the standalone scripts, rather than both.
+
+Run regression checks with `AutoHotkey64.exe /ErrorStdOut tests\Smoke.ahk`.
+
+Run character-routing regression checks with `AutoHotkey64.exe /ErrorStdOut tests\BracketRouting.ahk`. Independent test windows verify Qt class detection and character-message delivery without depending on a particular application.
+
 ## KeepImeState.ahk
 
 #### What it for
@@ -39,6 +56,16 @@ This script locks the Microsoft Pinyin IME into Pinyin input mode and keeps it t
 - IME state constantly goes out of sync when tabbing between chat, browsers, and code editors
 - Bouncing between Chinese client content and terminals forces manual IME toggling over and over
 - Windows' per-application IME state memory is inconsistent garbage at best
+
+## Brackets.ahk
+
+With a Simplified Chinese keyboard layout active, `Shift + [` types `「` and `Shift + ]` types `」`.
+
+Switch to a separate ENG keyboard layout to type `{}` normally. The script checks the keyboard layout, not Microsoft Pinyin's internal Chinese/English mode.
+
+Standard Qt 5/6 window classes receive character messages to avoid a Unicode keystroke issue that can repeat the first quotation mark instead of alternating left and right marks. Detection supports versioned classes, debug builds, and namespaces without relying on application names; other windows retain standard text input.
+
+Double-click to run. To start it at sign-in, place a shortcut to the script in the Windows Startup folder.
 
 ## SyncAudioComm.ahk
 
