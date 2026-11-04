@@ -1,3 +1,5 @@
 /archive/
 .playwright-mcp
 publish_*.txt
+.playwright-cli/
+output/

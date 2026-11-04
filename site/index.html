@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="四个 AutoHotkey v2 小工具，让 Windows 的中文输入、窗口切换和通信音频顺手一点。一个托盘图标，统一管理。免费，非商用。">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f8fa">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="unfuck windows ux. — 让 Windows 顺手一点。">
+  <meta property="og:description" content="中文标点、拼音状态、同应用窗口切换、通信音频。四个小修补，一个统一入口。">
+  <meta property="og:url" content="https://mitsukijoe.github.io/unfuck-windows-ux/">
+  <link rel="canonical" href="https://mitsukijoe.github.io/unfuck-windows-ux/">
+  <link rel="icon" href="./assets/logo.svg" type="image/svg+xml">
+  <title>unfuck windows ux. — 让 Windows 顺手一点。</title>
+  <script>
+    (() => {
+      try {
+        const theme = localStorage.getItem('uwux-theme');
+        document.documentElement.dataset.theme = theme === 'dark' || theme === 'light' ? theme : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.lang = localStorage.getItem('uwux-language') === 'en' ? 'en' : 'zh-CN';
+      } catch {}
+    })();
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">跳到正文</a>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v16m-6-6 6 6 6-6"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.3-4.3-2.2-6-2.7m12 5v-3.5a3 3 0 0 0-.8-2.3c2.7-.3 5.5-1.3 5.5-6A4.7 4.7 0 0 0 18.4 6a4.4 4.4 0 0 0-.1-3.5s-1-.3-3.6 1.4a12.4 12.4 0 0 0-6.5 0C5.7 2.2 4.6 2.5 4.6 2.5A4.4 4.4 0 0 0 4.5 6a4.7 4.7 0 0 0-1.3 3.3c0 4.6 2.8 5.6 5.5 6a3 3 0 0 0-.8 2.3v3.7"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.8 13a9 9 0 0 1-9.8-9.8A9 9 0 1 0 20.8 13Z"/></symbol>
+    <symbol id="i-window" viewBox="0 0 24 24"><rect x="3" y="7" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12M3 12h14"/></symbol>
+    <symbol id="i-audio" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5V4ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></symbol>
+  </svg>
+
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="#top" aria-label="unfuck windows ux. Home"><img src="./assets/logo.svg" width="34" height="34" alt=""><span>unfuck windows ux<span class="brand-dot">.</span></span></a>
+      <nav id="navigation" class="nav-links" aria-label="主导航" data-i18n-aria="nav">
+        <a href="#playground" data-i18n="navFeatures">功能体验</a>
+        <a href="#arch-sec" data-i18n="navArchitecture">代码结构</a>
+        <a href="#install" data-i18n="navInstall">开始使用</a>
+      </nav>
+      <div class="nav-actions">
+        <button type="button" class="language-button" id="language-button" aria-label="Switch to English">EN</button>
+        <button type="button" class="icon-button" id="theme-button" aria-label="切换到深色模式"><svg class="icon"><use href="#i-moon"/></svg></button>
+        <a class="nav-github" href="https://github.com/MitsukiJoe/unfuck-windows-ux" target="_blank" rel="noopener noreferrer"><svg class="icon"><use href="#i-github"/></svg><span>GitHub</span><svg class="icon small"><use href="#i-arrow"/></svg></a>
+        <button type="button" class="icon-button menu-button" id="menu-button" aria-expanded="false" aria-controls="navigation" aria-label="打开导航" data-i18n-aria="menu"><svg class="icon"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-inner container">
+        <div class="hero-copy">
+          <p class="eyebrow hero-eyebrow"><span class="status-dot"></span><span data-i18n="heroEyebrow">几个 Windows 本来就该有的小功能</span></p>
+          <h1 id="hero-title">unfuck<br> <span>windows ux.</span><svg class="hero-asterisk" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4v56M8 18l48 28M8 46l48-28"/></svg></h1>
+          <p class="hero-tagline" data-i18n="heroTagline">让 Windows 顺手一点。</p>
+          <p class="hero-description" data-i18n="heroDescription">中文输入、窗口切换、耳机音频。那些每天都遇到的小别扭，用四个 AutoHotkey 脚本补上。</p>
+          <div class="hero-actions"><a href="#install" class="button primary"><span data-i18n="heroStart">下载使用</span><svg class="icon"><use href="#i-down"/></svg></a><a href="#playground" class="button text-button"><span data-i18n="heroDemo">看看怎么用</span><span aria-hidden="true">↗</span></a></div>
+          <p class="hero-note" data-i18n="heroNote">Windows 10 / 11 · AutoHotkey v2 · 免费，非商用</p>
+        </div>
+        <div class="key-art" aria-hidden="true">
+          <div class="art-coordinate coordinate-top">LESS FRICTION. MORE FLOW.</div>
+          <div class="keyboard-sculpture">
+            <div class="keycap keycap-bracket"><span class="keycap-corner">01</span><span class="keycap-symbol">「 」</span><span class="keycap-label">PUNCTUATION</span></div>
+            <div class="keycap keycap-ime"><span class="keycap-corner">02</span><span class="keycap-symbol">中<span class="caret"></span></span><span class="keycap-label">STAY IN PINYIN</span></div>
+            <div class="keycap keycap-window"><span class="keycap-corner">03</span><span class="keycap-symbol"><span class="alt-label">Alt</span> ~</span><span class="keycap-label">SAME APP. NEXT WINDOW.</span></div>
+            <div class="keycap keycap-audio"><span class="keycap-corner">04</span><svg class="keycap-sound"><use href="#i-audio"/></svg><span class="keycap-label">AUDIO, IN SYNC.</span></div>
+          </div>
+          <span class="art-coordinate coordinate-bottom">SMALL SCRIPTS. BETTER DAYS.</span>
+          <div class="art-orbit"></div>
+        </div>
+      </div>
+      <div class="hero-bottom container"><span class="mono">FOUR FIXES. ONE TRAY.</span><a href="#playground"><span data-i18n="scroll">往下，试试看</span><svg class="icon small"><use href="#i-down"/></svg></a><span class="mono hero-bottom-right">MADE FOR EVERYDAY WINDOWS</span></div>
+    </section>
+
+    <section class="section playground-section" id="playground" aria-labelledby="playground-title">
+      <div class="container">
+        <div class="section-heading reveal"><div><p class="eyebrow">01 / THE LITTLE FIXES</p><h2 id="playground-title" data-i18n="playgroundTitle">小改动，用起来不一样。</h2></div><p class="section-intro" data-i18n="playgroundIntro">点开一个功能，试试它的工作方式。<br>这里是网页演示，不会改变你的系统设置。</p></div>
+        <div class="playground-layout reveal">
+          <div class="feature-tabs" role="tablist" aria-orientation="vertical" aria-label="功能演示" data-i18n-aria="featureTabs">
+            <button type="button" class="feature-tab" role="tab" id="tab-brackets" aria-controls="demo-panel" aria-selected="true" data-feature="brackets"><span class="feature-number">01</span><span><strong data-i18n="bracketsName">中文标点</strong><small data-i18n="bracketsShort">Shift + [，直接输入「</small></span><span class="feature-arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="feature-tab" role="tab" id="tab-ime" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-feature="ime"><span class="feature-number">02</span><span><strong data-i18n="imeName">保持拼音中文模式</strong><small data-i18n="imeShort">切回中文布局，继续打中文</small></span><span class="feature-arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="feature-tab" role="tab" id="tab-windows" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-feature="windows"><span class="feature-number">03</span><span><strong data-i18n="windowsName">同应用窗口切换</strong><small data-i18n="windowsShort">Alt + ~，只切当前应用的窗口</small></span><span class="feature-arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="feature-tab" role="tab" id="tab-audio" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-feature="audio"><span class="feature-number">04</span><span><strong data-i18n="audioName">通信音频跟随</strong><small data-i18n="audioShort">换了播放设备，语音也跟着走</small></span><span class="feature-arrow" aria-hidden="true">↗</span></button>
+          </div>
+          <div class="demo-panel" id="demo-panel" role="tabpanel" aria-labelledby="tab-brackets" tabindex="0"><div class="demo-chrome"><span class="demo-dots"><i></i><i></i><i></i></span><span id="demo-filename" class="mono">Brackets.ahk</span><span class="demo-label" data-i18n="interactiveDemo">交互演示</span></div><div class="demo-content" id="demo-content"></div></div>
+        </div>
+        <p class="feature-footnote"><svg class="icon small"><use href="#i-check"/></svg><span data-i18n="featureFootnote">每个功能都可以单独开关。快捷键、符号样式和同步间隔，都由你决定。</span></p>
+      </div>
+    </section>
+
+    <section class="section unified-section" id="settings" aria-labelledby="settings-title">
+      <div class="container unified-layout">
+        <div class="unified-copy reveal"><p class="eyebrow">02 / ONE PLACE FOR EVERYTHING</p><h2 id="settings-title" data-i18n="settingsTitle">四个功能。<br>一个托盘图标。</h2><p data-i18n="settingsDescription">运行 AutoHotkeyTools.ahk，就能在同一个设置窗口里管理所有功能。修改立即生效，下次打开也还在。</p><div class="plain-detail"><span class="detail-mark">↗</span><div><h3 data-i18n="settingsOneTitle">打开即用，关上继续</h3><p data-i18n="settingsOneBody">单击托盘图标打开设置。关闭窗口后，脚本继续在后台运行。</p></div></div><div class="plain-detail"><span class="detail-mark">↻</span><div><h3 data-i18n="settingsTwoTitle">跟着 Windows 一起启动</h3><p data-i18n="settingsTwoBody">在「常规」里开启登录自启。下次登录时在后台启动，不弹窗口。</p></div></div><a class="inline-link" href="https://github.com/MitsukiJoe/unfuck-windows-ux#autohotkeytoolsahk统一托盘与设置" target="_blank" rel="noopener noreferrer"><span data-i18n="settingsDocs">查看完整使用说明</span><svg class="icon small"><use href="#i-arrow"/></svg></a></div>
+        <div class="settings-preview reveal">
+          <div class="settings-titlebar">
+            <img src="./assets/logo.svg" width="21" height="21" alt="">
+            <span data-i18n="settingsWindowTitle">Windows 小工具</span>
+            <span class="window-controls" aria-hidden="true">
+              <span class="window-control"><svg viewBox="0 0 10 10"><path d="M0 5.5h10"/></svg></span>
+              <span class="window-control maximize"><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9"/></svg></span>
+              <span class="window-control"><svg viewBox="0 0 10 10"><path d="m.5 .5 9 9m0-9-9 9"/></svg></span>
+            </span>
+          </div>
+          <div class="settings-preview-body"><h3 data-i18n="settingsWindowTitle">Windows 小工具</h3><p class="settings-saved"><svg class="icon small"><use href="#i-check"/></svg><span data-i18n="settingsPreviewNote">设置窗口示意 · 所有修改自动保存</span></p><div class="settings-rows"><div><span class="setting-glyph">「」</span><span data-i18n="bracketsName">中文标点</span><span class="preview-switch" aria-hidden="true"></span></div><div><span class="setting-glyph">中</span><span data-i18n="imeName">保持拼音中文模式</span><span class="preview-switch" aria-hidden="true"></span></div><div><svg class="icon setting-glyph"><use href="#i-window"/></svg><span data-i18n="windowsName">同应用窗口切换</span><span class="preview-switch" aria-hidden="true"></span></div><div><svg class="icon setting-glyph"><use href="#i-audio"/></svg><span data-i18n="audioName">通信音频跟随</span><span class="preview-switch" aria-hidden="true"></span></div></div><div class="preview-general"><span data-i18n="settingsStartup">登录 Windows 时自动运行</span><span class="preview-switch off" aria-hidden="true"></span></div><p class="preview-caption" data-i18n="settingsCaption">各项独立设置，按自己的习惯来。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section architecture-section" id="arch-sec" aria-labelledby="architecture-title">
+      <div class="container">
+        <div class="section-heading reveal"><div><p class="eyebrow">03 / UNDER THE HOOD</p><h2 id="architecture-title" data-i18n="architectureTitle">小工具，结构也简单。</h2></div><p class="section-intro" data-i18n="architectureIntro">统一入口负责管理，四个模块各做各的。<br>想单独跑某个脚本，也可以。</p></div>
+        <div class="architecture reveal"><div class="architecture-flow"><div class="entry-node"><img src="./assets/logo.svg" width="34" height="34" alt=""><div><strong class="mono">AutoHotkeyTools.ahk</strong><span data-i18n="entryDescription">统一入口 · 托盘 · 设置 · 登录自启</span></div><span class="entry-tag mono">ENTRY</span></div><div class="flow-spine"><span class="mono">lib/</span></div><div class="module-grid"><button type="button" class="module-node" data-module="brackets" aria-pressed="true"><span class="module-glyph">「 」</span><span class="mono">BracketMapper</span><small data-i18n="bracketsName">中文标点</small></button><button type="button" class="module-node" data-module="ime" aria-pressed="false"><span class="module-glyph">中</span><span class="mono">ImeStateKeeper</span><small data-i18n="imeName">保持拼音中文模式</small></button><button type="button" class="module-node" data-module="windows" aria-pressed="false"><svg class="icon module-glyph"><use href="#i-window"/></svg><span class="mono">AppWindowSwitcher</span><small data-i18n="windowsName">同应用窗口切换</small></button><button type="button" class="module-node" data-module="audio" aria-pressed="false"><svg class="icon module-glyph"><use href="#i-audio"/></svg><span class="mono">AudioSynchronizer</span><small data-i18n="audioName">通信音频跟随</small></button></div></div><div class="source-detail"><div class="source-detail-top"><span class="mono" data-i18n="sourceLabel">SOURCE / 源码</span><span aria-hidden="true">↗</span></div><h3 id="module-title">BracketMapper.ahk</h3><p id="module-description"></p><a class="inline-link" id="module-source" href="https://github.com/MitsukiJoe/unfuck-windows-ux/blob/main/lib/BracketMapper.ahk" target="_blank" rel="noopener noreferrer"><span data-i18n="viewSource">在 GitHub 查看</span><svg class="icon small"><use href="#i-arrow"/></svg></a></div></div>
+        <div class="architecture-notes"><p><span data-i18n="localSettings">设置保存在本机</span><code>%APPDATA%\AutoHotkeyTools\settings.ini</code></p><p><span class="note-symbol" aria-hidden="true">!</span><span data-i18n="migrationNote">使用统一入口前，请先退出旧的独立脚本，避免重复运行。</span></p></div>
+      </div>
+    </section>
+
+    <section class="section install-section" id="install" aria-labelledby="install-title">
+      <div class="container"><div class="section-heading reveal"><div><p class="eyebrow">04 / GET IT RUNNING</p><h2 id="install-title" data-i18n="installTitle">几步，就用上了。</h2></div><p class="section-intro" data-i18n="installIntro">不用编译，也不用配置一堆东西。<br>装好 AutoHotkey v2，运行脚本就行。</p></div><div class="install-layout reveal"><ol class="install-steps"><li><span class="step-index mono">01</span><div><h3 data-i18n="stepOneTitle">安装 AutoHotkey v2</h3><p data-i18n="stepOneBody">需要 v2，旧的 v1 版本不适用。</p><a class="inline-link" href="https://www.autohotkey.com/download/" target="_blank" rel="noopener noreferrer"><span data-i18n="getAhk">前往官网下载</span><svg class="icon small"><use href="#i-arrow"/></svg></a></div></li><li><span class="step-index mono">02</span><div><h3 data-i18n="stepTwoTitle">下载并解压整个项目</h3><p data-i18n="stepTwoBody">保留 lib 和 icons 等文件夹，不要只下载入口脚本。</p></div></li><li><span class="step-index mono">03</span><div><h3 data-i18n="stepThreeTitle">双击 AutoHotkeyTools.ahk</h3><p data-i18n="stepThreeBody">看到托盘图标就启动了。单击图标，按习惯调整设置。</p></div></li></ol><div class="download-panel"><div class="install-tabs" role="tablist" aria-label="下载方式" data-i18n-aria="downloadTabs"><button type="button" role="tab" id="download-tab" aria-controls="download-panel" aria-selected="true" data-install="download" data-i18n="downloadTab">直接下载</button><button type="button" role="tab" id="clone-tab" aria-controls="clone-panel" aria-selected="false" tabindex="-1" data-install="clone" data-i18n="cloneTab">Git 克隆</button></div><div class="install-tabpanel" id="download-panel" role="tabpanel" aria-labelledby="download-tab"><div class="download-file"><span class="zip-icon mono">ZIP</span><div><strong>unfuck-windows-ux</strong><span class="mono">main / source code</span></div></div><p data-i18n="downloadDescription">完整源码，解压后即可运行。<br>脚本保持透明，想改也方便。</p><a class="button primary download-button" href="https://github.com/MitsukiJoe/unfuck-windows-ux/archive/refs/heads/main.zip"><span data-i18n="downloadZip">下载项目 ZIP</span><svg class="icon"><use href="#i-download"/></svg></a><a class="download-repo" href="https://github.com/MitsukiJoe/unfuck-windows-ux" target="_blank" rel="noopener noreferrer" data-i18n="browseRepo">或先去 GitHub 看看 ↗</a></div><div class="install-tabpanel" id="clone-panel" role="tabpanel" aria-labelledby="clone-tab" hidden><div class="code-label mono">TERMINAL <button type="button" class="copy-button" id="copy-button"><svg class="icon small"><use href="#i-copy"/></svg><span data-i18n="copy">复制</span></button></div><pre><code id="clone-command">git clone https://github.com/MitsukiJoe/unfuck-windows-ux.git</code></pre><p data-i18n="cloneDescription">进入项目文件夹，双击 AutoHotkeyTools.ahk。<br>之后可以用 git pull 更新源码。</p><p class="clone-caution" data-i18n="cloneCaution">更新前先退出正在运行的脚本，更新后重新启动。</p></div><p class="download-requirement mono">WINDOWS 10 / 11 &nbsp; + &nbsp; AUTOHOTKEY v2</p></div></div></div>
+    </section>
+
+    <section class="faq-section"><div class="container faq-layout"><div><p class="eyebrow">A FEW THINGS TO KNOW</p><h2 data-i18n="faqTitle">用之前，了解一下。</h2></div><div class="faq-list"><details><summary data-i18n="faqOneTitle">需要一直开着吗？<span>+</span></summary><p data-i18n="faqOneBody">需要。脚本在后台运行时功能才会生效。关闭设置窗口不会退出；要停止运行，右键托盘图标选择「退出」。</p></details><details><summary data-i18n="faqTwoTitle">可以只用其中一个功能吗？<span>+</span></summary><p data-i18n="faqTwoBody">可以。在统一设置里关闭不需要的功能，或单独运行 Brackets.ahk、KeepImeState.ahk、WindowSwitch.ahk、SyncAudioComm.ahk。不要与统一入口同时运行。</p></details><details><summary data-i18n="faqThreeTitle">中文标点在英文模式下也生效吗？<span>+</span></summary><p data-i18n="faqThreeBody">默认按键盘布局判断，不按微软拼音内部的中／英模式判断。在简体中文布局下生效；切换到独立的 ENG 英文键盘布局后，仍然输入原来的花括号。</p></details><details><summary data-i18n="faqFourTitle">免费吗？可以商用吗？<span>+</span></summary><p data-i18n="faqFourBody">完全免费，采用 CC BY-NC-SA 4.0 协议，仅限非商业使用。转载请署名并以相同协议分享。如果你花钱买到了这个项目，请退款并举报卖家。</p></details></div></div></section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-top"><a href="#top" class="footer-wordmark">unfuck windows ux<span>.</span></a><p data-i18n="footerTagline">就是几个让日常顺手一点的小脚本。</p></div><div class="footer-bottom"><span>BY <a href="https://github.com/MitsukiJoe" target="_blank" rel="noopener noreferrer">MitsukiJoe</a> <span class="footer-separator">/</span> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a></span><div><a href="https://github.com/MitsukiJoe/unfuck-windows-ux/issues" target="_blank" rel="noopener noreferrer" data-i18n="feedback">反馈问题 ↗</a><a href="https://github.com/MitsukiJoe/unfuck-windows-ux" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="#top" data-i18n="backTop">回到顶部 ↑</a></div></div></div></footer>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+</body>
+</html>

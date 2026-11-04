@@ -22,6 +22,8 @@ Small utility scripts I wrote for myself to deal with the daily UX paper cuts th
 
 Runs on [AutoHotkey v2](https://www.autohotkey.com/download/).
 
+The project website lives in `site/` and includes browser-based demos of all four features. See the [GitHub Pages guide](docs/GitHubPages.md) for local preview and deployment instructions.
+
 ## AutoHotkeyTools.ahk: unified tray and settings
 
 Run `AutoHotkeyTools.ahk` to manage all four features from one tray icon. Click the icon to open settings, close the settings window to keep running in the background, or right-click the icon to exit.

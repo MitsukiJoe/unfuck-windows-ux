@@ -22,6 +22,8 @@
 
 运行环境为 [AutoHotkey v2](https://www.autohotkey.com/download/)。
 
+项目介绍页源码位于 `site/`，包含四个功能的网页演示。预览与 GitHub Pages 发布方式见 [页面说明](docs/GitHubPages.md)。
+
 ## AutoHotkeyTools.ahk：统一托盘与设置
 
 推荐双击 `AutoHotkeyTools.ahk`，用一个托盘图标管理全部四个功能。单击托盘图标打开设置，关闭设置窗口后继续在后台运行，右键托盘图标可以退出。
