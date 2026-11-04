@@ -66,8 +66,8 @@
     imeOnText: ['你好，继续刚才的话题。', '你好，继续刚才的话题。'], imeOffText: ['ni hao, ji xu gang cai de hua ti.', 'ni hao, ji xu gang cai de hua ti.'],
     imeResultOn: ['切回微软拼音时，自动保持中文模式。', 'Switching back to Microsoft Pinyin keeps Chinese mode.'], imeResultOff: ['已关闭保持功能，模拟拼音停留在英文模式。', 'Keeper off: this demo leaves Pinyin in English mode.'], imeResultTerminal: ['独立 ENG 布局保持英文，不受影响。', 'The separate ENG layout stays in English.'],
     windowsDemoTitle: ['当前应用的下一个窗口，按一下就到。', 'The next window. Of this app.'],
-    windowsDemoDescription: ['点击 Alt + ~，在三个文件夹窗口间循环。实际快捷键可以在设置中修改。', 'Press the button to cycle through three folder windows. The actual shortcut is configurable in settings.'],
-    folderWork: ['工作', 'Work'], folderDownloads: ['下载', 'Downloads'], folderPictures: ['图片', 'Pictures'], folderContents: ['文件夹内容', 'Folder contents'], windowsResult: ['资源管理器只在文件夹窗口间切换，跳过桌面和任务栏。', 'Explorer cycles through folder windows, skipping the desktop and taskbar.'],
+    windowsDemoDescription: ['点击 Alt + ~，在三个文件夹窗口间循环。右侧的记事本不参与切换。实际快捷键可以在设置中修改。', 'Cycle through three folder windows. Notepad on the right stays out of the rotation. The actual shortcut is configurable in settings.'],
+    folderWork: ['工作', 'Work'], folderDownloads: ['下载', 'Downloads'], folderPictures: ['图片', 'Pictures'], folderContents: ['文件夹内容', 'Folder contents'], otherAppExcluded: ['不参与切换', 'Not switched'], windowsResult: ['只切同应用窗口，跳过其他应用、桌面和任务栏。', 'Cycle within the same app, skipping other apps, the desktop and taskbar.'],
     audioDemoTitle: ['播放设备切换了，通信设备也同步。', 'Switch output. Keep voice audio with it.'],
     audioDemoDescription: ['选一个播放设备，看看通信设备如何跟随。实际脚本按设置的间隔检查并同步。', 'Choose an output and watch communication audio follow. The real script syncs at your configured interval.'],
     deviceSpeakers: ['扬声器', 'Speakers'], deviceHeadphones: ['耳机', 'Headphones'], deviceMonitor: ['显示器', 'Monitor'], defaultPlayback: ['默认播放设备', 'Default playback'], defaultCommunications: ['默认通信设备', 'Default communications'], audioSwitch: ['通信音频自动跟随', 'Auto-sync communication audio'],
@@ -146,7 +146,7 @@
     }
 
     if (state.feature === 'windows') {
-      content.innerHTML = heading('windowsDemoTitle', 'windowsDemoDescription') + `<div class="mini-windows">${['folderWork', 'folderDownloads', 'folderPictures'].map((folder, i) => `<div class="mini-window${i === state.window ? ' active' : ''}"><div class="mini-window-title">${icon('window')}<span>${t(folder)}</span></div><div class="mini-window-body"><span class="folder-icon"></span><br>${t('folderContents')}</div></div>`).join('')}</div><div class="window-demo-bottom"><button type="button" class="keyboard-button" id="next-window">Alt + ~ <span>↻</span></button><span class="window-counter" id="window-counter" role="status">0${state.window + 1} / 03</span></div><p class="demo-result">${icon('check')}${t('windowsResult')}</p>`;
+      content.innerHTML = heading('windowsDemoTitle', 'windowsDemoDescription') + `<div class="mini-windows"><div class="same-app-windows">${['folderWork', 'folderDownloads', 'folderPictures'].map((folder, i) => `<div class="mini-window${i === state.window ? ' active' : ''}"><div class="mini-window-title">${icon('window')}<span>${t(folder)}</span></div><div class="mini-window-body"><span class="folder-icon"></span><br>${t('folderContents')}</div></div>`).join('')}</div><div class="other-app-window"><div class="other-app-title"><svg class="icon small" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M5.5 5h5m-5 3h5m-5 3h3"/></svg><span>Notepad</span></div><div class="other-app-body"><span class="notepad-line"></span><span class="notepad-line"></span><span class="notepad-line short"></span><small>${t('otherAppExcluded')}</small></div></div></div><div class="window-demo-bottom"><button type="button" class="keyboard-button" id="next-window">Alt + ~ <span>↻</span></button><span class="window-counter" id="window-counter" role="status">0${state.window + 1} / 03</span></div><p class="demo-result">${icon('check')}${t('windowsResult')}</p>`;
       $('#next-window').addEventListener('click', () => {
         state.window = (state.window + 1) % 3;
         $$('.mini-window').forEach((element, i) => element.classList.toggle('active', i === state.window));
@@ -320,6 +320,8 @@
     closeMenu();
   });
   paintLanguage();
+  const requestedFeature = new URLSearchParams(location.search).get('demo');
+  if (features.includes(requestedFeature)) selectFeature(requestedFeature);
   if ('IntersectionObserver' in window) {
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const revealObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {

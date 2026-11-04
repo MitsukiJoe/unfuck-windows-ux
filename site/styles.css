@@ -172,6 +172,14 @@ h1 > span { color: var(--accent-text); white-space: nowrap; }
 .ime-typed { font-size: 19px; }
 .ime-typed::after { content: ""; display: inline-block; height: 20px; width: 1px; margin-left: 3px; background: var(--accent); vertical-align: -4px; }
 .mini-windows { position: relative; height: 143px; margin-top: 22px; isolation: isolate; }
+.same-app-windows { position: relative; width: 67%; height: 100%; }
+.other-app-window { position: absolute; right: 0; top: 20px; width: 30%; height: 123px; border: 1px solid var(--line); border-radius: 7px; background: var(--bg); overflow: hidden; }
+.other-app-title { display: flex; align-items: center; gap: 5px; padding: 8px; border-bottom: 1px solid var(--line); color: var(--secondary); font: 10px var(--font); white-space: nowrap; }
+.other-app-title .icon { width: 12px; height: 12px; }
+.other-app-body { padding: 16px 10px; }
+.notepad-line { display: block; height: 2px; margin-bottom: 7px; background: var(--line); }
+.notepad-line.short { width: 65%; }
+.other-app-body small { display: block; margin-top: 15px; color: var(--secondary); font-size: 9px; white-space: nowrap; }
 .mini-window { position: absolute; top: 0; width: 66%; max-width: 300px; height: 123px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); overflow: hidden; box-shadow: 0 4px 12px #0000000a; transform: translate(0, 10px) scale(.94); transition: transform .3s, background .3s; }
 .mini-window:nth-child(2) { left: 16%; top: 9px; }
 .mini-window:nth-child(3) { left: 33%; top: 18px; }
